@@ -12,7 +12,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     mavp2p_process = None
     api_ip = "intelligentquads.com"
     # TODO make node_ip querryable
-    node_ip = "164.92.113.203"
     http = "https"
 
     def __init__(self, *args, obj=None, **kwargs):
@@ -27,17 +26,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.api_ip = "localhost"
             self.http = "http"
 
-    def request_port(self, uuid):
+    def request_connection(self, uuid):
         print(f"requesting sim data from {self.api_ip}")
-        URL = f"{self.http}://{self.api_ip}/get_port"
+        URL = f"{self.http}://{self.api_ip}/get_connection"
         PARAMS = {'uuid': uuid}
         r = requests.get(url=URL, params=PARAMS)
         data = r.json()
         print(data)
 
-        return data['port']
+        return data
 
-    def run_mavp2p(self, port):
+    def run_mavp2p(self, con_data):
         # tcpc:164.92.113.203:30771 udpc:127.0.0.1:14550
         client1_ip = self.mavlink1_ip.text()
         client1_port = self.mavlink1_port_le.text()
@@ -57,15 +56,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         elif platform == "win32":
             mavp2p_path = "./mavp2p/mavp2p_windows/mavp2p"
 
+        port = con_data["port"]
+        node_ip = con_data["ip"]
         self.mavp2p_process = subprocess.Popen(
-            [f"{mavp2p_path}", f"tcpc:{self.node_ip}:{port}", f"udpc:{client1_ip}:{client1_port}", f"udpc:{client2_ip}:{client2_port}", f"udpc:{client3_ip}:{client3_port}"])
+            [f"{mavp2p_path}", f"tcpc:{node_ip}:{port}", f"udpc:{client1_ip}:{client1_port}", f"udpc:{client2_ip}:{client2_port}", f"udpc:{client3_ip}:{client3_port}"])
 
     def connect(self):
         uuid = self.sim_uuid_le.text()
         print(f"uuid {uuid}")
         self.disconnect()
-        port = self.request_port(uuid)
-        self.run_mavp2p(port)
+        data = self.request_connection(uuid)
+        self.run_mavp2p(data)
 
     def disconnect(self):
         if self.mavp2p_process:
