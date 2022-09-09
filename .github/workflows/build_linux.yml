@@ -28,3 +28,9 @@ jobs:
         # env:
         #   AZURE_SECRET_TOKEN: ${{ secrets.AZURE_SECRET_TOKEN }}
         run: python generate_executable.py
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: client_zip
+          path: iq_sim_client.zip
+          if-no-files-found: error
