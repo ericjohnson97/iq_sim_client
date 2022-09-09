@@ -1,7 +1,4 @@
-# This is a basic workflow to help you get started with Actions
-
-name: Run Build
-
+name: Build Client
 # Controls when the workflow will run
 on:
 
@@ -11,22 +8,34 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build_linux:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
       - name: Install Pip Packages
         run: pip install -r requirements.txt 
 
-      # Runs a single command using the runners shell
       - name: Run a Python script
-        # env:
-        #   AZURE_SECRET_TOKEN: ${{ secrets.AZURE_SECRET_TOKEN }}
+        run: python generate_executable.py
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: client_zip
+          path: iq_sim_client.zip
+          if-no-files-found: error
+
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Pip Packages
+        run: pip install -r requirements.txt 
+
+      - name: Run a Python script
         run: python generate_executable.py
 
       - uses: actions/upload-artifact@v3
