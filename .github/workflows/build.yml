@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: client_zip
+          name: iq_sim_client_linux
           path: iq_sim_client.zip
           if-no-files-found: error
 
@@ -40,6 +40,6 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: client_zip
+          name: iq_sim_client_windows
           path: iq_sim_client.zip
           if-no-files-found: error
