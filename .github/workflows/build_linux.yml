@@ -20,6 +20,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: Install Pip Packages
+        run: pip install -r requirements.txt 
+
       # Runs a single command using the runners shell
       - name: Run a Python script
         # env:
