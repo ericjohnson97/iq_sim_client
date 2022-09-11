@@ -1,7 +1,6 @@
 name: Build Client
 # Controls when the workflow will run
 on:
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -15,7 +14,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install Pip Packages
-        run: pip install -r requirements.txt 
+        run: pip install -r requirements.txt
 
       - name: Run a Python script
         run: python generate_executable.py
@@ -23,7 +22,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: iq_sim_client_linux
-          path: iq_sim_client.zip
+          path: iq_sim_client_linux.zip
           if-no-files-found: error
 
   build_windows:
@@ -33,7 +32,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install Pip Packages
-        run: pip install -r requirements.txt 
+        run: pip install -r requirements.txt
 
       - name: Run a Python script
         run: python generate_executable.py
@@ -41,5 +40,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: iq_sim_client_windows
-          path: iq_sim_client.zip
+          path: iq_sim_client_windows.zip
           if-no-files-found: error

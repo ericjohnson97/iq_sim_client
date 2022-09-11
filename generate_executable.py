@@ -17,17 +17,19 @@ def main():
     if platform == "linux" or platform == "linux2":
         shutil.copytree("mavp2p/mavp2p_linux",
                         "iq_sim_client/mavp2p/mavp2p_linux")
+        output_filename = "iq_sim_client_linux"
     elif platform == "darwin":
         print("todo")
         return
     elif platform == "win32":
         shutil.copytree("mavp2p/mavp2p_windows",
                         "iq_sim_client/mavp2p/mavp2p_windows")
+        output_filename = "iq_sim_client_windows"
 
     os.system("pyinstaller -F app.py --distpath iq_sim_client")
 
     shutil.copytree("imgs", "iq_sim_client/imgs")
-    shutil.make_archive("iq_sim_client", 'zip', "iq_sim_client")
+    shutil.make_archive(output_filename, 'zip', "iq_sim_client")
 
 
 if __name__ == "__main__":
