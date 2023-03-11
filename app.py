@@ -7,6 +7,8 @@ import subprocess
 import os
 from sys import platform
 
+os.environ['QT_QPA_PLATFORM'] = "wayland"
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     mavp2p_process = None
