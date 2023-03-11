@@ -25,7 +25,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: iq_sim_client_${{ matrix.os }} 
-          path: iq_sim_client_*.zip
+          path: iq_sim_client
           if-no-files-found: error
 
       # - name: Create release

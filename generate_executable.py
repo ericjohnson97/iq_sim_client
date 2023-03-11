@@ -3,8 +3,9 @@ import shutil
 import sys
 import platform
 import distro
+import argparse
 
-def main():
+def main(zip):
     try:
         shutil.rmtree("iq_sim_client")
     except:
@@ -31,10 +32,20 @@ def main():
         output_filename = "iq_sim_client_windows"
 
     os.system("pyinstaller -F app.py --distpath iq_sim_client")
-
     shutil.copytree("imgs", "iq_sim_client/imgs")
-    shutil.make_archive(output_filename, 'zip', "iq_sim_client")
 
+    if zip:
+        print("zipping application")
+        shutil.make_archive(output_filename, 'zip', "iq_sim_client")
+    else:
+        print("not zipping application")
 
 if __name__ == "__main__":
-    main()
+    # parse arguments 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--zip", help="zip the executable", action="store_true") 
+
+    args = parser.parse_args()
+
+
+    main(args.zip)
