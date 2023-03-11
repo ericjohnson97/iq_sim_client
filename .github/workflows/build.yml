@@ -8,7 +8,10 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build_linux:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04]
 
     steps:
       - uses: actions/checkout@v3
