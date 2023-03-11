@@ -1,9 +1,11 @@
 import os
 import shutil
-from sys import platform
+import sys
+import platform
+import distro
+import argparse
 
-
-def main():
+def main(zip):
     try:
         shutil.rmtree("iq_sim_client")
     except:
@@ -14,23 +16,36 @@ def main():
     except:
         print("no file iq_sim_client.zip")
 
-    if platform == "linux" or platform == "linux2":
+    if sys.platform == "linux" or sys.platform == "linux2":
         shutil.copytree("mavp2p/mavp2p_linux",
                         "iq_sim_client/mavp2p/mavp2p_linux")
         output_filename = "iq_sim_client_linux"
-    elif platform == "darwin":
+        distro_name = distro.name(pretty=True).replace(" ", "_").replace(".", "_")
+        print(distro_name)
+        output_filename = output_filename + "_" + distro_name 
+    elif sys.platform == "darwin":
         print("todo")
         return
-    elif platform == "win32":
+    elif sys.platform == "win32":
         shutil.copytree("mavp2p/mavp2p_windows",
                         "iq_sim_client/mavp2p/mavp2p_windows")
         output_filename = "iq_sim_client_windows"
 
     os.system("pyinstaller -F app.py --distpath iq_sim_client")
-
     shutil.copytree("imgs", "iq_sim_client/imgs")
-    shutil.make_archive(output_filename, 'zip', "iq_sim_client")
 
+    if zip:
+        print("zipping application")
+        shutil.make_archive(output_filename, 'zip', "iq_sim_client")
+    else:
+        print("not zipping application")
 
 if __name__ == "__main__":
-    main()
+    # parse arguments 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--zip", help="zip the executable", action="store_true") 
+
+    args = parser.parse_args()
+
+
+    main(args.zip)

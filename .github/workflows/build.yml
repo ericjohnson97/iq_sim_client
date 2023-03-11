@@ -7,8 +7,11 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build_linux:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-20.04, windows-latest]
 
     steps:
       - uses: actions/checkout@v3
@@ -21,24 +24,6 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: iq_sim_client_linux
-          path: iq_sim_client_linux.zip
-          if-no-files-found: error
-
-  build_windows:
-    runs-on: windows-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Pip Packages
-        run: pip install -r requirements.txt
-
-      - name: Run a Python script
-        run: python generate_executable.py
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: iq_sim_client_windows
-          path: iq_sim_client_windows.zip
+          name: iq_sim_client_${{ matrix.os }} 
+          path: iq_sim_client
           if-no-files-found: error

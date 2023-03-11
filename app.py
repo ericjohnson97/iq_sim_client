@@ -5,7 +5,16 @@ import sys
 import requests
 import subprocess
 import os
+import distro
 from sys import platform
+
+
+# check if distro is ubuntu 22.04 
+distro = distro.name(pretty=True).replace(" ", "_").replace(".", "_")
+print(distro)
+if "22_04" in distro:
+    print("setting qt platform to wayland")
+    os.environ['QT_QPA_PLATFORM'] = "wayland"
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
