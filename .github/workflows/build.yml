@@ -24,8 +24,8 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: iq_sim_client_linux
-          path: iq_sim_client_linux.zip
+          name: format( 'iq_sim_client_linux_{0}', matrix.os ) 
+          path: iq_sim_client_linux*.zip
           if-no-files-found: error
 
   build_windows:
@@ -45,3 +45,26 @@ jobs:
           name: iq_sim_client_windows
           path: iq_sim_client_windows.zip
           if-no-files-found: error
+
+      # - name: Create release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ github.event.inputs.version }}
+      #     release_name: Release ${{ github.event.inputs.version }}
+      #     body: |
+      #       Release ${{ github.event.inputs.version }}
+      #     draft: false
+      #     prerelease: false
+      #   id: release
+
+      # - name: Upload release asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.release.outputs.upload_url }}
+      #     asset_path: ${{ steps.build.outputs.artifact_path }}
+      #     asset_name: some-file-name.ext
+      #     asset_content_type: application/octet-stream

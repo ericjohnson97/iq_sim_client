@@ -1,7 +1,8 @@
 import os
 import shutil
-from sys import platform
-
+import sys
+import platform
+import distro
 
 def main():
     try:
@@ -14,14 +15,17 @@ def main():
     except:
         print("no file iq_sim_client.zip")
 
-    if platform == "linux" or platform == "linux2":
+    if sys.platform == "linux" or sys.platform == "linux2":
         shutil.copytree("mavp2p/mavp2p_linux",
                         "iq_sim_client/mavp2p/mavp2p_linux")
         output_filename = "iq_sim_client_linux"
-    elif platform == "darwin":
+        distro_name = distro.name(pretty=True).replace(" ", "_").replace(".", "_")
+        print(distro_name)
+        output_filename = output_filename + "_" + distro_name 
+    elif sys.platform == "darwin":
         print("todo")
         return
-    elif platform == "win32":
+    elif sys.platform == "win32":
         shutil.copytree("mavp2p/mavp2p_windows",
                         "iq_sim_client/mavp2p/mavp2p_windows")
         output_filename = "iq_sim_client_windows"
